@@ -1,16 +1,15 @@
 package pl.campaigns.model;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 
 @Getter
 @Setter
 @NoArgsConstructor
-class Campaign {
+@AllArgsConstructor
+@RequiredArgsConstructor
+public class Campaign {
 
     private Long id;
     private String campaignName;
@@ -20,5 +19,4 @@ class Campaign {
     private CampaignStatus status;
     private String town;
     private double radius;
-
 }
