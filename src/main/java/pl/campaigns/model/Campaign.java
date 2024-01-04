@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
+
 public class Campaign {
 
     private Long id;
