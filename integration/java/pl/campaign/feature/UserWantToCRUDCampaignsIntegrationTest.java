@@ -95,8 +95,8 @@ public class UserWantToCRUDCampaignsIntegrationTest extends BaseIntegrationTest 
                 .id(1L)
                 .campaignName("name2")
                 .keywords("keywords2")
-                .bidAmount(new BigDecimal("3"))
-                .campaignFund(new BigDecimal("4"))
+                .bidAmount(new BigDecimal("3.00"))
+                .campaignFund(new BigDecimal("4.00"))
                 .status(CampaignStatus.OFF)
                 .town("town2")
                 .radius(4.2)
@@ -109,13 +109,14 @@ public class UserWantToCRUDCampaignsIntegrationTest extends BaseIntegrationTest 
                 .contentType(MediaType.APPLICATION_JSON));
         MvcResult mvcDeleteResult = performDeleteMovie.andExpect(status().isOk()).andReturn();
         String jsonDeleteCampaign = mvcDeleteResult.getResponse().getContentAsString();
+        Campaign deletedCampaign = objectMapper.readValue(jsonDeleteCampaign, Campaign.class);
         //then
-        assertThat(jsonDeleteCampaign).isEqualTo(Campaign.builder()
+        assertThat(deletedCampaign).isEqualTo(Campaign.builder()
                 .id(1L)
                 .campaignName("name2")
                 .keywords("keywords2")
-                .bidAmount(new BigDecimal("3"))
-                .campaignFund(new BigDecimal("4"))
+                .bidAmount(new BigDecimal("3.00"))
+                .campaignFund(new BigDecimal("4.00"))
                 .status(CampaignStatus.OFF)
                 .town("town2")
                 .radius(4.2)
