@@ -1,10 +1,12 @@
 package pl.campaigns.service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 import pl.campaigns.model.Campaign;
 import pl.campaigns.repository.CampaignRepository;
 import java.util.List;
 
+@Service
 @AllArgsConstructor
 public class CampaignService {
     private final CampaignRepository campaignRepository;

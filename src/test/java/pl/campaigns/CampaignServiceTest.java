@@ -92,6 +92,4 @@ public class CampaignServiceTest {
                         CampaignStatus.ON, "2", 4.2))
         );
     }
-
-
 }
