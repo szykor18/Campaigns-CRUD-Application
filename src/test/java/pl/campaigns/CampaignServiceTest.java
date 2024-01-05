@@ -16,26 +16,54 @@ public class CampaignServiceTest {
     @Test
     public void should_save_to_database_when_user_add_to_database() {
         //given
-        Campaign campaign = new Campaign(1L, "name", "1",
-                new BigDecimal(1), new BigDecimal(2),
-                CampaignStatus.ON, "1", 3.4);
+        Campaign campaign = Campaign.builder()
+                .id(1L)
+                .campaignName("name")
+                .keywords("keywords")
+                .campaignFund(new BigDecimal(1))
+                .bidAmount(new BigDecimal(2))
+                .radius(3.4)
+                .town("town")
+                .status(CampaignStatus.ON)
+                .build();
         //when
         campaignService.addCampaign(campaign);
         List<Campaign> campaigns = campaignService.findAllCampaigns();
         //then
-        assertThat(campaigns).containsExactly(new Campaign(1L, "name", "1",
-                new BigDecimal(1), new BigDecimal(2),
-                CampaignStatus.ON, "1", 3.4));
+        assertThat(campaigns).containsExactly(Campaign.builder()
+                .id(1L)
+                .campaignName("name")
+                .keywords("keywords")
+                .campaignFund(new BigDecimal(1))
+                .bidAmount(new BigDecimal(2))
+                .radius(3.4)
+                .town("town")
+                .status(CampaignStatus.ON)
+                .build());
     }
     @Test
     public void should_find_all_campaigns_after_user_added_two_campaigns() {
         //given
-        Campaign campaign1 = new Campaign(1L, "name1", "1",
-                new BigDecimal(1), new BigDecimal(2),
-                CampaignStatus.ON, "1", 3.4);
-        Campaign campaign2 = new Campaign(2L, "name2", "2",
-                new BigDecimal(2), new BigDecimal(3),
-                CampaignStatus.OFF, "2", 3.5);
+        Campaign campaign1 = Campaign.builder()
+                .id(1L)
+                .campaignName("name")
+                .keywords("keywords")
+                .campaignFund(new BigDecimal(1))
+                .bidAmount(new BigDecimal(2))
+                .radius(3.4)
+                .town("town")
+                .status(CampaignStatus.ON)
+                .build();
+        Campaign campaign2 = Campaign.builder()
+                .id(2L)
+                .campaignName("name2")
+                .keywords("keywords2")
+                .campaignFund(new BigDecimal(2))
+                .bidAmount(new BigDecimal(3))
+                .radius(4.2)
+                .town("town2")
+                .status(CampaignStatus.OFF)
+                .build();
         //when
         campaignService.addCampaign(campaign1);
         campaignService.addCampaign(campaign2);
@@ -44,52 +72,97 @@ public class CampaignServiceTest {
         Assertions.assertAll(
                 () -> assertThat(campaigns).hasSize(2),
                 () -> assertThat(campaigns).containsExactlyInAnyOrder(
-                        new Campaign(1L, "name1", "1",
-                                new BigDecimal(1), new BigDecimal(2),
-                                CampaignStatus.ON, "1", 3.4),
-                        new Campaign(2L, "name2", "2",
-                                new BigDecimal(2), new BigDecimal(3),
-                                CampaignStatus.OFF, "2", 3.5))
-        );
+                        Campaign.builder()
+                                .id(1L)
+                                .campaignName("name")
+                                .keywords("keywords")
+                                .campaignFund(new BigDecimal(1))
+                                .bidAmount(new BigDecimal(2))
+                                .radius(3.4)
+                                .town("town")
+                                .status(CampaignStatus.ON)
+                                .build(),
+                        Campaign.builder()
+                                .id(2L)
+                                .campaignName("name2")
+                                .keywords("keywords2")
+                                .campaignFund(new BigDecimal(2))
+                                .bidAmount(new BigDecimal(3))
+                                .radius(4.2)
+                                .town("town2")
+                                .status(CampaignStatus.OFF)
+                                .build()));
     }
     @Test
     public void should_return_deleted_campaign_and_return_empty_list_if_user_deleted_campaign() {
         //given
-        Campaign campaign = new Campaign(1L, "name1", "1",
-                new BigDecimal(1), new BigDecimal(2),
-                CampaignStatus.ON, "1", 3.4);
+        Campaign campaign = Campaign.builder()
+                .id(1L)
+                .campaignName("name")
+                .keywords("keywords")
+                .campaignFund(new BigDecimal(1))
+                .bidAmount(new BigDecimal(2))
+                .radius(3.4)
+                .town("town")
+                .status(CampaignStatus.ON)
+                .build();
         //when
         campaignService.addCampaign(campaign);
-        Campaign deletedCampaign = campaignService.deleteCampaign(campaign);
+        Campaign deletedCampaign = campaignService.deleteCampaignById(1L);
         //then
         Assertions.assertAll(
                 () -> assertThat(campaignService.findAllCampaigns()).hasSize(0),
-                () -> assertThat(deletedCampaign).isEqualTo(new Campaign(1L, "name1", "1",
-                        new BigDecimal(1), new BigDecimal(2),
-                        CampaignStatus.ON, "1", 3.4))
-
-        );
+                () -> assertThat(deletedCampaign).isEqualTo(Campaign.builder()
+                        .id(1L)
+                        .campaignName("name")
+                        .keywords("keywords")
+                        .campaignFund(new BigDecimal(1))
+                        .bidAmount(new BigDecimal(2))
+                        .radius(3.4)
+                        .town("town")
+                        .status(CampaignStatus.ON)
+                        .build()));
     }
 
     @Test
     public void should_return_edited_task_when_user_edited_existing_task() {
         //given
-        Campaign campaign = new Campaign(1L, "name", "1",
-                new BigDecimal(1), new BigDecimal(2),
-                CampaignStatus.ON, "1", 3.4);
-        Campaign campaignToUpdate = new Campaign(1L, "name2", "2",
-                new BigDecimal(8), new BigDecimal(3),
-                CampaignStatus.ON, "2", 4.2);
+        Campaign campaign1 = Campaign.builder()
+                .id(1L)
+                .campaignName("name")
+                .keywords("keywords")
+                .campaignFund(new BigDecimal(1))
+                .bidAmount(new BigDecimal(2))
+                .radius(3.4)
+                .town("town")
+                .status(CampaignStatus.ON)
+                .build();
+        Campaign campaign2 = Campaign.builder()
+                .id(1L)
+                .campaignName("name2")
+                .keywords("keywords2")
+                .campaignFund(new BigDecimal(2))
+                .bidAmount(new BigDecimal(3))
+                .radius(4.2)
+                .town("town2")
+                .status(CampaignStatus.OFF)
+                .build();
         //when
-        campaignService.addCampaign(campaign);
-        campaignService.editCampaign(1L, campaignToUpdate);
+        campaignService.addCampaign(campaign1);
+        campaignService.editCampaign(1L, campaign2);
         List<Campaign> campaigns = campaignService.findAllCampaigns();
         //then
         Assertions.assertAll(
                 () -> assertThat(campaigns).hasSize(1),
-                () -> assertThat(campaigns).containsExactlyInAnyOrder(new Campaign(1L, "name2", "2",
-                        new BigDecimal(8), new BigDecimal(3),
-                        CampaignStatus.ON, "2", 4.2))
-        );
+                () -> assertThat(campaigns).containsExactlyInAnyOrder(Campaign.builder()
+                        .id(1L)
+                        .campaignName("name2")
+                        .keywords("keywords2")
+                        .campaignFund(new BigDecimal(2))
+                        .bidAmount(new BigDecimal(3))
+                        .radius(4.2)
+                        .town("town2")
+                        .status(CampaignStatus.OFF)
+                        .build()));
     }
 }

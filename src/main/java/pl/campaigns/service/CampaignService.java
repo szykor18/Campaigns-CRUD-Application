@@ -24,8 +24,10 @@ public class CampaignService {
                 .orElseThrow(() -> new RuntimeException("Campaign not found"));
     }
 
-    public Campaign deleteCampaign(Campaign campaign) {
-        campaignRepository.delete(campaign);
+    public Campaign deleteCampaignById(Long id) {
+        Campaign campaign = campaignRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Campaign not found"));
+        campaignRepository.deleteById(id);
         return campaign;
     }
 

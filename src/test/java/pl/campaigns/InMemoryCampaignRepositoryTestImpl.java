@@ -136,8 +136,8 @@ public class InMemoryCampaignRepositoryTestImpl implements CampaignRepository {
     }
 
     @Override
-    public void deleteById(Long aLong) {
-
+    public void deleteById(Long id) {
+        campaigns.remove(id);
     }
 
     @Override
