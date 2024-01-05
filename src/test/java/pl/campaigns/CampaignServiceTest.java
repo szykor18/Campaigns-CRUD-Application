@@ -23,7 +23,7 @@ public class CampaignServiceTest {
         List<Campaign> campaigns = campaignService.findAllCampaigns();
         //then
         assertThat(campaigns).containsExactly(campaign);
-
     }
+
 
 }

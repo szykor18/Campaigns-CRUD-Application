@@ -3,8 +3,6 @@ package pl.campaigns.service;
 import lombok.AllArgsConstructor;
 import pl.campaigns.model.Campaign;
 import pl.campaigns.repository.CampaignRepository;
-
-import java.util.Collections;
 import java.util.List;
 
 @AllArgsConstructor
@@ -12,18 +10,20 @@ public class CampaignService {
     private final CampaignRepository campaignRepository;
 
     public Campaign addCampaign(Campaign campaign) {
-        return new Campaign();
+        return campaignRepository.save(campaign);
     }
 
     public List<Campaign> findAllCampaigns() {
-        return Collections.emptyList();
+        return campaignRepository.findAll();
     }
 
     public Campaign findCampaignById(Long id) {
-        return new Campaign();
+        return campaignRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Campaign not found"));
     }
 
     public Campaign deleteCampaign(Campaign campaign) {
-        return new Campaign();
+        campaignRepository.delete(campaign);
+        return campaign;
     }
 }
