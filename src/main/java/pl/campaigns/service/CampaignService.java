@@ -35,7 +35,7 @@ public class CampaignService {
         Campaign existingCampaign = campaignRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Campaign not found"));
         Campaign updatedCampaign = updateExistingCampaignToNewOne(existingCampaign, campaign);
-        return updatedCampaign;
+        return campaignRepository.save(updatedCampaign);
     }
 
     private Campaign updateExistingCampaignToNewOne(Campaign existingCampaign, Campaign campaign) {

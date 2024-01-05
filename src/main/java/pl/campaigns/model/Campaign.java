@@ -17,6 +17,7 @@ import java.math.BigDecimal;
 @EqualsAndHashCode
 @Entity
 @Builder
+@ToString
 public class Campaign {
 
     @Id
@@ -37,4 +38,5 @@ public class Campaign {
     private String town;
     @NotNull
     private double radius;
+
 }

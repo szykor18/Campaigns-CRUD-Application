@@ -1,5 +1,6 @@
 package pl.campaigns.controller;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,14 +23,14 @@ public class CampaignRestController {
     }
 
     @PostMapping
-    public ResponseEntity<Campaign> addCampaign(@RequestBody Campaign campaign) {
+    public ResponseEntity<Campaign> addCampaign(@Valid @RequestBody Campaign campaign) {
         Campaign savedCampaign = campaignService.addCampaign(campaign);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedCampaign);
     }
 
-    @PutMapping
-    public ResponseEntity<Campaign> updateCampaign(@RequestBody Campaign campaign) {
-        Campaign updatedCampaign = campaignService.editCampaign(campaign.getId(), campaign);
+    @PutMapping("/{id}")
+    public ResponseEntity<Campaign> updateCampaign(@PathVariable Long id, @Valid @RequestBody Campaign campaignDetails) {
+        Campaign updatedCampaign = campaignService.editCampaign(id, campaignDetails);
         return ResponseEntity.ok(updatedCampaign);
     }
 
