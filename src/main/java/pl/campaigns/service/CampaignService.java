@@ -26,4 +26,22 @@ public class CampaignService {
         campaignRepository.delete(campaign);
         return campaign;
     }
+
+    public Campaign editCampaign(Long id, Campaign campaign) {
+        Campaign existingCampaign = campaignRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Campaign not found"));
+        Campaign updatedCampaign = updateExistingCampaignToNewOne(existingCampaign, campaign);
+        return updatedCampaign;
+    }
+
+    private Campaign updateExistingCampaignToNewOne(Campaign existingCampaign, Campaign campaign) {
+        existingCampaign.setCampaignName(campaign.getCampaignName());
+        existingCampaign.setCampaignFund(campaign.getCampaignFund());
+        existingCampaign.setKeywords(campaign.getKeywords());
+        existingCampaign.setTown(campaign.getTown());
+        existingCampaign.setStatus(campaign.getStatus());
+        existingCampaign.setBidAmount(campaign.getBidAmount());
+        existingCampaign.setRadius(campaign.getRadius());
+        return existingCampaign;
+    }
 }

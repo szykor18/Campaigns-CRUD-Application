@@ -8,11 +8,13 @@ import org.springframework.data.repository.query.FluentQuery;
 import pl.campaigns.model.Campaign;
 import pl.campaigns.repository.CampaignRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class InMemoryCampaignRepositoryTestImpl implements CampaignRepository {
     private final Map<Long, Campaign> campaigns = new ConcurrentHashMap<>();
@@ -120,7 +122,7 @@ public class InMemoryCampaignRepositoryTestImpl implements CampaignRepository {
 
     @Override
     public List<Campaign> findAll() {
-        return campaigns.values().stream().toList();
+        return new ArrayList<>(campaigns.values());
     }
 
     @Override
@@ -140,7 +142,7 @@ public class InMemoryCampaignRepositoryTestImpl implements CampaignRepository {
 
     @Override
     public void delete(Campaign entity) {
-
+        campaigns.remove(entity.getId());
     }
 
     @Override
