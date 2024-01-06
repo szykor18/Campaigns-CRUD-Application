@@ -3,6 +3,7 @@ package pl.campaigns.service;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.campaigns.model.Campaign;
+import pl.campaigns.model.CampaignNotFoundException;
 import pl.campaigns.repository.CampaignRepository;
 import java.util.List;
 
@@ -21,19 +22,19 @@ public class CampaignService {
 
     public Campaign findCampaignById(Long id) {
         return campaignRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Campaign not found"));
+                .orElseThrow(() -> new CampaignNotFoundException(id));
     }
 
     public Campaign deleteCampaignById(Long id) {
         Campaign campaign = campaignRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Campaign not found"));
+                .orElseThrow(() -> new CampaignNotFoundException(id));
         campaignRepository.deleteById(id);
         return campaign;
     }
 
     public Campaign editCampaign(Long id, Campaign campaign) {
         Campaign existingCampaign = campaignRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Campaign not found"));
+                .orElseThrow(() -> new CampaignNotFoundException(id));
         Campaign updatedCampaign = updateExistingCampaignToNewOne(existingCampaign, campaign);
         return campaignRepository.save(updatedCampaign);
     }

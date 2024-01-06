@@ -1,8 +1,10 @@
 package pl.campaigns;
 
+import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import pl.campaigns.model.Campaign;
+import pl.campaigns.model.CampaignNotFoundException;
 import pl.campaigns.model.CampaignStatus;
 import pl.campaigns.service.CampaignService;
 
@@ -10,6 +12,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 
 public class CampaignServiceTest {
     private final CampaignService campaignService = new CampaignService(new InMemoryCampaignRepositoryTestImpl());
@@ -164,5 +167,26 @@ public class CampaignServiceTest {
                         .town("town2")
                         .status(CampaignStatus.OFF)
                         .build()));
+    }
+
+    @Test
+    public void should_throw_campaign_not_found_exception_when_campaign_with_given_id_not_exists() {
+        //given
+        Campaign campaign = Campaign.builder()
+                .id(1L)
+                .campaignName("name2")
+                .keywords("keywords2")
+                .campaignFund(new BigDecimal(2))
+                .bidAmount(new BigDecimal(3))
+                .radius(4.2)
+                .town("town2")
+                .status(CampaignStatus.OFF)
+                .build();
+        //when
+        Throwable throwable = catchThrowable(() -> campaignService.editCampaign(10L, campaign));
+        //then
+        AssertionsForClassTypes.assertThat(throwable)
+                .isInstanceOf(CampaignNotFoundException.class)
+                .hasMessage("Campaign with id '10' not found");
     }
 }
