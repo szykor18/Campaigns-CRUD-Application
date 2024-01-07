@@ -4,21 +4,17 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.math.BigDecimal;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
 @Entity
 @Builder
-@ToString
 public class Campaign {
 
     @Id
@@ -29,7 +25,7 @@ public class Campaign {
     @NotNull(message = "{keywords.not.null}")
     private String keywords;
     @NotNull(message = "{bidAmount.not.null}")
-    @Min(1)
+    @Min(value = 1, message = "{bidAmount.min} {value}")
     private BigDecimal bidAmount;
     @NotNull(message = "{campaignFund.not.null}")
     private BigDecimal campaignFund;

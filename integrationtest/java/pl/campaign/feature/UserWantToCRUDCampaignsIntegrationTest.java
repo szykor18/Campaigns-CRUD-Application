@@ -6,6 +6,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import pl.campaign.BaseIntegrationTest;
+import pl.campaigns.controller.error.CampaignErrorResponse;
 import pl.campaigns.model.Campaign;
 import pl.campaigns.model.CampaignStatus;
 
@@ -14,6 +15,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class UserWantToCRUDCampaignsIntegrationTest extends BaseIntegrationTest {
@@ -51,7 +53,33 @@ public class UserWantToCRUDCampaignsIntegrationTest extends BaseIntegrationTest 
                 .build());
 
 
-    //step 2: User made a mistake and want to update previous campaign he added.
+    //step 2: User made a mistake and want to update previous campaign he added, but he enters not existing id
+        //given && when
+        ResultActions performUpdateWithNotExistingId = mockMvc.perform(put("/campaigns/3")
+                .content("""
+                        {
+                           "campaignName": "name2",
+                           "keywords": "keywords2",
+                           "bidAmount": 3,
+                           "campaignFund": 4,
+                           "status": "OFF",
+                           "town": "town2",
+                           "radius": 4.2
+                        }
+                        """.trim())
+                .contentType(MediaType.APPLICATION_JSON));
+        //then
+        performUpdateWithNotExistingId.andExpect(status().isNotFound()).andExpect(content().json(
+                """
+                {
+                "message": "Campaign with id '3' not found",
+                "status": "NOT_FOUND"
+                }
+                """.trim()
+        ));
+
+
+    //step 3: User made a mistake and want to update previous campaign he added and now enters correct id
         //given && when
         ResultActions performUpdateCampaign = mockMvc.perform(put("/campaigns/1")
                 .content("""
@@ -82,7 +110,7 @@ public class UserWantToCRUDCampaignsIntegrationTest extends BaseIntegrationTest 
                 .build());
 
 
-    //step 3: User want see to all campaigns and system returns one correct campaign.
+    //step 4: User want see to all campaigns and system returns one correct campaign.
         //given && when
         ResultActions performGetAll = mockMvc.perform(get("/campaigns")
                 .contentType(MediaType.APPLICATION_JSON));
@@ -103,7 +131,7 @@ public class UserWantToCRUDCampaignsIntegrationTest extends BaseIntegrationTest 
                 .build());
 
 
-    //step 4: User want to delete campaign
+    //step 5: User want to delete campaign
         // given && when
         ResultActions performDeleteMovie = mockMvc.perform(delete("/campaigns/1")
                 .contentType(MediaType.APPLICATION_JSON));
