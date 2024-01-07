@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
@@ -23,20 +24,19 @@ public class Campaign {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotNull
+    @NotNull(message = "{campaignName.not.null}")
     private String campaignName;
-    @NotNull
+    @NotNull(message = "{keywords.not.null}")
     private String keywords;
-    @NotNull
-    @DecimalMin("0.01")
+    @NotNull(message = "{bidAmount.not.null}")
+    @Min(1)
     private BigDecimal bidAmount;
-    @NotNull
-    @DecimalMin("0.01")
+    @NotNull(message = "{campaignFund.not.null}")
     private BigDecimal campaignFund;
-    @NotNull
+    @NotNull(message = "{status.not.null}")
     private CampaignStatus status;
     private String town;
-    @NotNull
+    @NotNull(message = "{radius.not.null}")
     private double radius;
 
 }
